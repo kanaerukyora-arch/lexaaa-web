@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
 
     if (!/^(\+?62|0)8\d{7,12}$/.test(phone)) return json({ ok: false, message: "Format nomor tidak valid." }, 400);
     if (!["Telkomsel", "by.U", "Indosat / IM3", "Tri (3)", "Smartfren", "XL", "Axis", "Live.On"].includes(card)) return json({ ok: false, message: "Jenis kartu tidak valid." }, 400);
-    if (!["Area 1", "Area 2", "Area 3", "Area 4"].includes(area)) return json({ ok: false, message: "Area tidak valid." }, 400);
+    if (!area.trim() || area.length > 150) return json({ ok: false, message: "Nama kota tidak valid." }, 400);
     if (body.location_consent !== true) return json({ ok: false, message: "Persetujuan lokasi wajib." }, 400);
     if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 ||
         !Number.isFinite(longitude) || longitude < -180 || longitude > 180 ||
