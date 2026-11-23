@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     }
 
     const url = Deno.env.get("SUPABASE_URL")!;
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const serviceKey = Deno.env.get("SERVICE_ROLE_KEY")!;
     const admin = createClient(url, serviceKey, { auth: { persistSession: false } });
 
     const { error } = await admin.from("registrations").insert({
