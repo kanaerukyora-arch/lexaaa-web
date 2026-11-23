@@ -1,16 +1,12 @@
-# Lexaa Web — Visual Prototype
+# Lexaaa Web — Visual Prototype
 
-Static frontend prototype based on the supplied screenshots/assets.
+Prototype frontend Lexaaa untuk GitHub Pages / Cloudflare Pages.
 
-## Run
-Open `index.html` in a browser, or serve the folder with any static server.
+## Struktur
+- index.html
+- style.css
+- script.js
+- assets/ untuk gambar dan video referensi.
 
-## Deploy
-This project is static and can be deployed to GitHub Pages or Cloudflare Pages.
-
-## Assets
-- `assets/lexaa-world.mp4` — supplied looping background video.
-- `assets/lexaa-wallet.jpg` — supplied wallet background image.
-
-## Important
-This version intentionally uses demo/local state only. It does not implement real authentication, wallet storage, OTP, or financial transactions.
+## Catatan
+Versi ini fokus pada tampilan dan alur demo. Belum memakai database, OTP, autentikasi server, atau transaksi finansial nyata.
