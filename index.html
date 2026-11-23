@@ -38,11 +38,11 @@ label{display:block;font-weight:750;margin:14px 0 7px}input,select{width:100%;pa
       <option>Axis</option><option>Live.On</option></select>
 
     <h3>Deteksi kota melalui lokasi</h3>
-    <p class="hint">Kota akan dideteksi dari lokasi perangkat. Koordinat lokasi juga dikirim kepada owner untuk verifikasi setelah kamu menyetujui permintaan lokasi browser.</p>
+    <p class="hint">Kota dideteksi dari koordinat GPS melalui layanan BigDataCloud. Koordinat dikirim ke layanan tersebut untuk mencari nama kota, lalu disimpan agar owner dapat memeriksa lokasi pendaftaran.</p>
     <button class="btn secondary" id="locBtn">CEK / REFRESH LOKASI TERBARU</button>
     <p class="hint">Lokasi hanya diperbarui saat tombol ini ditekan dan izin lokasi diberikan. Tidak ada pelacakan diam-diam atau pelacakan latar belakang.</p>
     <div id="locStatus" class="status" aria-live="polite">Area belum diperiksa.</div>
-    <div class="checks"><input type="checkbox" id="consent"><label for="consent">Saya setuju nomor HP, jenis kartu, nama kota, dan koordinat lokasi perangkat saya dikirim kepada pengelola untuk verifikasi pendaftaran. Saya memahami koordinat lengkap dapat dilihat oleh owner yang berwenang.</label></div>
+    <div class="checks"><input type="checkbox" id="consent"><label for="consent">Saya setuju koordinat GPS digunakan oleh layanan BigDataCloud untuk mendeteksi kota, serta nomor HP, jenis kartu, nama kota, dan koordinat dikirim ke pengelola. Saya memahami koordinat lengkap dapat dilihat oleh owner yang berwenang.</label></div>
     <button class="btn" id="submitBtn" disabled>LANJUTKAN</button>
     <button class="btn secondary" id="backBtn" style="margin-top:10px">KEMBALI</button>
     <p id="formMsg" class="hint" aria-live="polite"></p>
