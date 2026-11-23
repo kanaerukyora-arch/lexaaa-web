@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promo Kuota 6GB — Pendaftaran</title>
+<style>
+:root{--navy:#10245f;--blue:#087df4;--cyan:#18c9f5;--purple:#7b20e8;--muted:#5d6b91}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;color:var(--navy);background:radial-gradient(circle at 90% 0,#c8e7ff 0,transparent 27%),radial-gradient(circle at 0 100%,#b7ddff 0,transparent 24%),#f4f8ff;min-height:100vh}
+.wrap{max-width:760px;margin:auto;padding:22px 16px 48px}.brand{font-weight:900;font-size:24px;letter-spacing:-1px;color:#5322a5}.brand span{color:#087df4}
+.hero{text-align:center;padding:34px 8px 22px}.eyebrow{font-size:clamp(18px,4vw,28px);font-weight:900;letter-spacing:.02em}.big{font-size:clamp(76px,18vw,142px);line-height:.95;font-weight:1000;letter-spacing:-.08em;color:#087df4;background:linear-gradient(145deg,#51efff 5%,#0788ff 42%,#1738c9 78%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 8px 3px #0b46a855) drop-shadow(0 0 18px #28baff99);font-style:italic}.sub{font-size:clamp(17px,4vw,24px);font-weight:650;color:#344777}
+.panel{background:#ffffffdc;border:1px solid #fff;border-radius:28px;padding:24px;box-shadow:0 18px 55px #164d9a1a,0 4px 14px #164d9a12;margin:18px 0}
+.cta,.btn{border:0;border-radius:999px;padding:16px 22px;font-size:17px;font-weight:850;color:white;background:linear-gradient(100deg,#078df5,#3827e8 68%,#8b22e8);box-shadow:0 8px 22px #2d63e866;cursor:pointer;width:100%}
+.btn.secondary{background:#eaf2ff;color:#17356e;box-shadow:none;border:1px solid #d4e2ff}.btn:disabled{opacity:.48;cursor:not-allowed}
+label{display:block;font-weight:750;margin:14px 0 7px}input,select{width:100%;padding:14px;border:1px solid #cbd9f2;border-radius:13px;font:inherit;background:white;color:#152b60}input:focus,select:focus{outline:3px solid #168bfa25;border-color:#168bfa}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hint{font-size:13px;color:var(--muted);line-height:1.5}.hidden{display:none!important}.status{padding:13px 15px;border-radius:14px;margin:14px 0;font-weight:750;background:#eef3ff;color:#244277}.good{background:#e7f9ee;color:#087b3c;border:1px solid #9cdeb5}.bad{background:#fff0f0;color:#bd2525;border:1px solid #ffc2c2}.area{font-size:28px;font-weight:950}.checks{display:flex;gap:10px;align-items:flex-start;margin:15px 0}.checks input{width:auto;margin-top:5px}.checks label{font-size:13px;font-weight:500;margin:0;line-height:1.5}.footer{text-align:center;color:#69799d;font-size:12px;margin-top:30px}
+@media(max-width:520px){.panel{padding:19px;border-radius:22px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="wrap">
+  <div class="brand">A<span>•</span>X <span style="color:#6b28ad">AxisXL</span></div>
+  <section id="home" class="hero">
+    <div class="eyebrow">PENDAFTARAN PROMO KUOTA</div>
+    <div class="big">6GB</div>
+    <div class="sub">Masa aktif 1 bulan · Satu kartu, satu kali</div>
+    <p class="hint">Halaman pendaftaran mitra/penjual independen. Ketersediaan dan pemberian kuota tetap menunggu verifikasi penjual/operator.</p>
+    <div class="panel">
+      <button class="cta" id="startBtn">AMBIL KUOTA SEKARANG</button>
+    </div>
+  </section>
+
+  <section id="formPage" class="panel hidden">
+    <h2>Data Pendaftaran</h2>
+    <p class="hint">Masukkan nomor yang akan didaftarkan. Pastikan nomor benar dan merupakan kartu milikmu.</p>
+    <label for="phone">Nomor HP</label><input id="phone" inputmode="tel" autocomplete="tel" placeholder="Contoh: 08xxxxxxxxxx" maxlength="16">
+    <label for="card">Jenis kartu</label><select id="card"><option value="">Pilih operator / kartu</option>
+      <option>Telkomsel</option><option>by.U</option><option>Indosat / IM3</option>
+      <option>Tri (3)</option><option>Smartfren</option><option>XL</option>
+      <option>Axis</option><option>Live.On</option></select>
+
+    <h3>Verifikasi area melalui lokasi</h3>
+    <p class="hint">Lokasi perangkat yang akurat diperlukan untuk menentukan area layanan. Koordinat hanya dikirim setelah kamu menekan tombol cek dan menyetujui permintaan lokasi browser.</p>
+    <button class="btn secondary" id="locBtn">CEK / REFRESH LOKASI TERBARU</button>
+    <p class="hint">Lokasi hanya diperbarui saat tombol ini ditekan dan izin lokasi diberikan. Tidak ada pelacakan diam-diam atau pelacakan latar belakang.</p>
+    <div id="locStatus" class="status" aria-live="polite">Area belum diperiksa.</div>
+    <div class="checks"><input type="checkbox" id="consent"><label for="consent">Saya setuju nomor HP, jenis kartu, area, dan koordinat lokasi perangkat saya dikirim kepada pengelola untuk verifikasi pendaftaran. Saya memahami data ini dapat dilihat oleh owner yang berwenang.</label></div>
+    <button class="btn" id="submitBtn" disabled>LANJUTKAN</button>
+    <button class="btn secondary" id="backBtn" style="margin-top:10px">KEMBALI</button>
+    <p id="formMsg" class="hint" aria-live="polite"></p>
+  </section>
+
+  <section id="donePage" class="panel hidden" style="text-align:center">
+    <div class="big" style="font-size:66px">6GB</div><h2>Pendaftaran Sedang Diproses</h2>
+    <p id="doneText">Data pendaftaran berhasil dikirim dan menunggu verifikasi owner.</p>
+    <div class="status">Status: MENUNGGU VERIFIKASI</div>
+    <button class="btn secondary" id="homeBtn">KEMBALI KE BERANDA</button>
+  </section>
+  <div class="footer">Pendaftaran oleh penjual independen. Bukan situs resmi XL Axiata atau Axis. Jangan masukkan PIN, OTP, atau kata sandi.</div>
+</main>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// Isi dari Supabase > Project Settings > API. Anon/publishable key boleh ada di browser.
+// JANGAN PERNAH menaruh service_role key di file HTML.
+const SUPABASE_URL = 'https://jdctzrvrmomdqpcwkqhm.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cj9edP4iRwmd5Zz2GJL7ZA_5Y8TMMdi';
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+// Isi polygon area resmi milik bisnismu. Format tiap area: [[latitude,longitude], ...]
+// Kosong = area belum dikonfigurasi dan pendaftaran tidak dapat dilanjutkan.
+// Jangan menebak area berdasarkan koordinat.
+const AREA_POLYGONS = [
+  // { name: 'Area 1', polygon: [[-6.2,106.7],[-6.1,106.7],[-6.1,106.9],[-6.2,106.9]] },
+  // { name: 'Area 2', polygon: [...] },
+  // { name: 'Area 3', polygon: [...] },
+  // { name: 'Area 4', polygon: [...] },
+];
+
+const $ = id => document.getElementById(id);
+let verifiedLocation = null;
+let verifiedArea = null;
+function show(page){['home','formPage','donePage'].forEach(id=>$(id).classList.toggle('hidden',id!==page));}
+function pointInPolygon(lat,lon,poly){
+  let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const [yi,xi]=poly[i], [yj,xj]=poly[j];
+    const intersect=((xi>lon)!==(xj>lon))&&(lat<(yj-yi)*(lon-xi)/(xj-xi)+yi);
+    if(intersect) inside=!inside;
+  }
+  return inside;
+}
+function findArea(lat,lon){
+  for(const a of AREA_POLYGONS){if(a.polygon?.length>=3 && pointInPolygon(lat,lon,a.polygon)) return a.name;}
+  return null;
+}
+$('startBtn').onclick=()=>show('formPage');
+$('backBtn').onclick=()=>show('home');
+$('homeBtn').onclick=()=>{verifiedLocation=null;verifiedArea=null;$('phone').value='';$('card').value='';$('consent').checked=false;$('submitBtn').disabled=true;$('locStatus').className='status';$('locStatus').textContent='Area belum diperiksa.';show('home');};
+$('consent').onchange=()=>{$('submitBtn').disabled=!(verifiedLocation && verifiedArea && $('consent').checked);};
+$('locBtn').onclick=()=>{
+  verifiedLocation=null;verifiedArea=null;$('submitBtn').disabled=true;
+  const s=$('locStatus');s.className='status';s.textContent='Memeriksa Area Kartu Anda...';$('locBtn').disabled=true;
+  if(!navigator.geolocation){s.className='status bad';s.textContent='Browser tidak mendukung GPS. Gunakan browser yang mendukung lokasi.';return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const {latitude,longitude,accuracy}=pos.coords;
+    const area=findArea(latitude,longitude);
+    if(!area){s.className='status bad';s.textContent='Koordinat terdeteksi, tetapi area layanan belum cocok atau batas Area 1–4 belum dikonfigurasi. Hubungi owner.';return;}
+    verifiedLocation={latitude,longitude,accuracy};
+    verifiedArea=area;
+    s.className='status good';
+    s.innerHTML=`<div class="area">✓ ${area}</div>Lokasi terakhir dibagikan: ${new Date().toLocaleString('id-ID')} · akurasi perangkat ±${Math.round(accuracy)} meter`;
+    $('submitBtn').disabled=!$('consent').checked;
+    $('locBtn').disabled=false; $('locBtn').textContent='CEK / REFRESH LOKASI TERBARU';
+  },err=>{
+    $('locBtn').disabled=false; $('locBtn').textContent='CEK / REFRESH LOKASI TERBARU';
+    s.className='status bad';
+    s.textContent=err.code===1?'Izin lokasi ditolak. Area tidak dapat diperiksa dan pendaftaran tidak bisa dilanjutkan.':'Lokasi gagal didapatkan. Aktifkan GPS dan coba lagi.';
+  },{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+};
+$('submitBtn').onclick=async()=>{
+  const phone=$('phone').value.replace(/[^\d+]/g,'');
+  const card=$('card').value;
+  const msg=$('formMsg');msg.textContent='';
+  if(!/^(\+?62|0)8\d{7,12}$/.test(phone)){msg.textContent='Periksa kembali format nomor HP.';return;}
+  if(!card){msg.textContent='Pilih jenis kartu terlebih dahulu.';return;}
+  if(!verifiedLocation||!verifiedArea||!$('consent').checked){msg.textContent='Cek area dan persetujuan pengiriman data wajib dilakukan.';return;}
+  $('submitBtn').disabled=true;$('submitBtn').textContent='MENGIRIM...';
+  try{
+    if(SUPABASE_URL.includes('YOUR_PROJECT')||SUPABASE_PUBLISHABLE_KEY.includes('YOUR_')) throw new Error('Konfigurasi Supabase belum diisi. Baca README.');
+    const {data,error}=await supabase.functions.invoke('register-lead',{body:{
+      phone,card,area:verifiedArea,latitude:verifiedLocation.latitude,
+      longitude:verifiedLocation.longitude,accuracy_m:verifiedLocation.accuracy,
+      location_consent:true
+    }});
+    if(error) throw error;
+    if(data?.code==='DUPLICATE') throw new Error('Nomor ini sudah terdaftar dan sedang menunggu proses. Hubungi owner jika perlu bantuan.');
+    if(!data?.ok) throw new Error(data?.message||'Pendaftaran belum berhasil.');
+    $('doneText').textContent='Pendaftaran diterima dan menunggu verifikasi owner. Simpan nomor yang kamu daftarkan.';
+    show('donePage');
+  }catch(e){msg.textContent=e.message||'Terjadi kesalahan. Coba lagi.';}
+  finally{$('submitBtn').disabled=!($('consent').checked&&verifiedLocation&&verifiedArea);$('submitBtn').textContent='LANJUTKAN';}
+};
+</script>
+</body></html>

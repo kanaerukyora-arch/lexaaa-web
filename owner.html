@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Owner Dashboard</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1430;color:#eaf1ff;font-family:Inter,system-ui,Arial,sans-serif}.wrap{max-width:1100px;margin:auto;padding:24px 16px}.muted{color:#9eafd4}.card{background:#121f42;border:1px solid #263960;border-radius:18px;padding:20px;margin:16px 0}.brand{font-size:23px;font-weight:900}.brand span{color:#38bdf8}input,select{padding:12px;border-radius:10px;border:1px solid #344b77;background:#0b1735;color:white;font:inherit;width:100%;margin:6px 0 12px}button{padding:11px 16px;border:0;border-radius:10px;background:linear-gradient(100deg,#087df4,#7138dc);color:white;font-weight:800;cursor:pointer}button.secondary{background:#263b66}button:disabled{opacity:.5}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{text-align:left;padding:12px;border-bottom:1px solid #2a3c60;font-size:13px}th{color:#a9c8ff}a{color:#62c7ff}.pill{padding:5px 9px;border-radius:20px;background:#263b66}.msg{color:#ffc2c2}.stat{font-size:27px;font-weight:900}.small{font-size:12px;color:#9eafd4}
+</style></head><body><main class="wrap">
+<div class="brand">AXISXL <span>OWNER</span></div><p class="muted">Dashboard privat untuk memeriksa pendaftaran dan lokasi terakhir yang dibagikan pengguna. Refresh memuat data tersimpan terbaru; ini bukan pelacakan GPS langsung.</p>
+<section id="login" class="card" style="max-width:440px"><h2>Login Owner</h2><label>Email</label><input id="email" type="email" autocomplete="username"><label>Password</label><input id="password" type="password" autocomplete="current-password"><button id="loginBtn">MASUK</button><p id="loginMsg" class="msg"></p></section>
+<section id="dashboard" class="hidden">
+<div class="row"><div class="card"><div class="muted">Total pendaftar</div><div class="stat" id="total">0</div></div><div class="card"><div class="muted">Menunggu verifikasi</div><div class="stat" id="pending">0</div></div></div>
+<div class="card"><div class="row"><div><h2>Data Pendaftaran</h2><p class="small">Nomor dan koordinat hanya tampil untuk akun owner.</p></div><div><button class="secondary" id="refreshBtn">REFRESH DATA TERBARU</button> <button id="logoutBtn">KELUAR</button></div></div>
+<input id="search" placeholder="Cari nomor / area...">
+<div class="tablewrap"><table><thead><tr><th>Waktu</th><th>Nomor HP</th><th>Kartu</th><th>Area</th><th>Koordinat</th><th>Akurasi</th><th>Terakhir dibagikan</th><th>Peta</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="rows"><tr><td colspan="10">Belum ada data.</td></tr></tbody></table></div></div>
+</section>
+</main>
+<script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL='https://jdctzrvrmomdqpcwkqhm.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_cj9edP4iRwmd5Zz2GJL7ZA_5Y8TMMdi';
+const supabase=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);let records=[];
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function load(){
+  const {data,error}=await supabase.from('registrations').select('*').order('created_at',{ascending:false}).limit(500);
+  if(error){$('loginMsg').textContent=error.message;return;}
+  records=data||[];$('total').textContent=records.length;$('pending').textContent=records.filter(x=>x.status==='Menunggu verifikasi').length;render();
+}
+function render(){
+  const q=$('search').value.toLowerCase();
+  const filtered=records.filter(x=>(x.phone+' '+x.area+' '+x.card).toLowerCase().includes(q));
+  $('rows').innerHTML=filtered.map(x=>{
+    const map=`https://www.google.com/maps?q=${encodeURIComponent(x.latitude+','+x.longitude)}`;
+    return `<tr><td>${new Date(x.created_at).toLocaleString('id-ID')}</td><td>${esc(x.phone)}</td><td>${esc(x.card)}</td><td>${esc(x.area)}</td><td>${Number(x.latitude).toFixed(6)}, ${Number(x.longitude).toFixed(6)}</td><td>±${Math.round(x.accuracy_m)} m</td><td>${new Date(x.created_at).toLocaleString("id-ID")}</td><td><a href="${map}" target="_blank" rel="noopener">Buka Maps</a></td><td><span class="pill">${esc(x.status)}</span></td><td><select data-status="${x.id}"><option ${x.status==='Menunggu verifikasi'?'selected':''}>Menunggu verifikasi</option><option ${x.status==='Sedang diproses'?'selected':''}>Sedang diproses</option><option ${x.status==='Selesai'?'selected':''}>Selesai</option><option ${x.status==='Ditolak'?'selected':''}>Ditolak</option></select><button data-save="${x.id}">Simpan</button></td></tr>`;
+  }).join('')||'<tr><td colspan="10">Tidak ada hasil.</td></tr>';
+  document.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{
+    const id=b.dataset.save,sel=document.querySelector(`[data-status="${id}"]`);
+    const {error}=await supabase.from('registrations').update({status:sel.value}).eq('id',id);
+    if(error) alert(error.message);else await load();
+  });
+}
+$('loginBtn').onclick=async()=>{
+  $('loginMsg').textContent='Memeriksa akun...';
+  if(SUPABASE_URL.includes('YOUR_PROJECT')||SUPABASE_PUBLISHABLE_KEY.includes('YOUR_')){$('loginMsg').textContent='Isi konfigurasi Supabase terlebih dahulu. Lihat README.';return;}
+  const {error}=await supabase.auth.signInWithPassword({email:$('email').value,password:$('password').value});
+  if(error){$('loginMsg').textContent=error.message;return;}
+  const {data:{user}}=await supabase.auth.getUser();
+  if(user?.app_metadata?.role!=='owner'){await supabase.auth.signOut();$('loginMsg').textContent='Akun ini tidak memiliki peran owner.';return;}
+  $('login').classList.add('hidden');$('dashboard').classList.remove('hidden');await load();
+};
+$('refreshBtn').onclick=load;$('search').oninput=render;
+$('logoutBtn').onclick=async()=>{await supabase.auth.signOut();$('dashboard').classList.add('hidden');$('login').classList.remove('hidden');};
+const {data:{session}}=await supabase.auth.getSession();
+if(session){const {data:{user}}=await supabase.auth.getUser();if(user?.app_metadata?.role==='owner'){$('login').classList.add('hidden');$('dashboard').classList.remove('hidden');await load();}}
+</script></body></html>
