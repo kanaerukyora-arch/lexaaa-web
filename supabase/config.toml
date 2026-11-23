@@ -1,0 +1,2 @@
+[functions.register-lead]
+verify_jwt = false
