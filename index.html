@@ -37,12 +37,12 @@ label{display:block;font-weight:750;margin:14px 0 7px}input,select{width:100%;pa
       <option>Tri (3)</option><option>Smartfren</option><option>XL</option>
       <option>Axis</option><option>Live.On</option></select>
 
-    <h3>Verifikasi area melalui lokasi</h3>
-    <p class="hint">Lokasi perangkat yang akurat diperlukan untuk menentukan area layanan. Koordinat hanya dikirim setelah kamu menekan tombol cek dan menyetujui permintaan lokasi browser.</p>
+    <h3>Deteksi kota melalui lokasi</h3>
+    <p class="hint">Kota akan dideteksi dari lokasi perangkat. Koordinat lokasi juga dikirim kepada owner untuk verifikasi setelah kamu menyetujui permintaan lokasi browser.</p>
     <button class="btn secondary" id="locBtn">CEK / REFRESH LOKASI TERBARU</button>
     <p class="hint">Lokasi hanya diperbarui saat tombol ini ditekan dan izin lokasi diberikan. Tidak ada pelacakan diam-diam atau pelacakan latar belakang.</p>
     <div id="locStatus" class="status" aria-live="polite">Area belum diperiksa.</div>
-    <div class="checks"><input type="checkbox" id="consent"><label for="consent">Saya setuju nomor HP, jenis kartu, area, dan koordinat lokasi perangkat saya dikirim kepada pengelola untuk verifikasi pendaftaran. Saya memahami data ini dapat dilihat oleh owner yang berwenang.</label></div>
+    <div class="checks"><input type="checkbox" id="consent"><label for="consent">Saya setuju nomor HP, jenis kartu, nama kota, dan koordinat lokasi perangkat saya dikirim kepada pengelola untuk verifikasi pendaftaran. Saya memahami koordinat lengkap dapat dilihat oleh owner yang berwenang.</label></div>
     <button class="btn" id="submitBtn" disabled>LANJUTKAN</button>
     <button class="btn secondary" id="backBtn" style="margin-top:10px">KEMBALI</button>
     <p id="formMsg" class="hint" aria-live="polite"></p>
@@ -65,51 +65,37 @@ const SUPABASE_URL = 'https://jdctzrvrmomdqpcwkqhm.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cj9edP4iRwmd5Zz2GJL7ZA_5Y8TMMdi';
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-// Isi polygon area resmi milik bisnismu. Format tiap area: [[latitude,longitude], ...]
-// Kosong = area belum dikonfigurasi dan pendaftaran tidak dapat dilanjutkan.
-// Jangan menebak area berdasarkan koordinat.
-const AREA_POLYGONS = [
-  // { name: 'Area 1', polygon: [[-6.2,106.7],[-6.1,106.7],[-6.1,106.9],[-6.2,106.9]] },
-  // { name: 'Area 2', polygon: [...] },
-  // { name: 'Area 3', polygon: [...] },
-  // { name: 'Area 4', polygon: [...] },
-];
+// Nama kota diperoleh dari layanan reverse geocoding setelah pengguna menyetujui dan menekan cek lokasi.
+
 
 const $ = id => document.getElementById(id);
 let verifiedLocation = null;
 let verifiedArea = null;
 function show(page){['home','formPage','donePage'].forEach(id=>$(id).classList.toggle('hidden',id!==page));}
-function pointInPolygon(lat,lon,poly){
-  let inside=false;
-  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
-    const [yi,xi]=poly[i], [yj,xj]=poly[j];
-    const intersect=((xi>lon)!==(xj>lon))&&(lat<(yj-yi)*(lon-xi)/(xj-xi)+yi);
-    if(intersect) inside=!inside;
-  }
-  return inside;
-}
-function findArea(lat,lon){
-  for(const a of AREA_POLYGONS){if(a.polygon?.length>=3 && pointInPolygon(lat,lon,a.polygon)) return a.name;}
-  return null;
-}
 $('startBtn').onclick=()=>show('formPage');
 $('backBtn').onclick=()=>show('home');
 $('homeBtn').onclick=()=>{verifiedLocation=null;verifiedArea=null;$('phone').value='';$('card').value='';$('consent').checked=false;$('submitBtn').disabled=true;$('locStatus').className='status';$('locStatus').textContent='Area belum diperiksa.';show('home');};
 $('consent').onchange=()=>{$('submitBtn').disabled=!(verifiedLocation && verifiedArea && $('consent').checked);};
 $('locBtn').onclick=()=>{
   verifiedLocation=null;verifiedArea=null;$('submitBtn').disabled=true;
-  const s=$('locStatus');s.className='status';s.textContent='Memeriksa Area Kartu Anda...';$('locBtn').disabled=true;
-  if(!navigator.geolocation){s.className='status bad';s.textContent='Browser tidak mendukung GPS. Gunakan browser yang mendukung lokasi.';return;}
+  const s=$('locStatus');s.className='status';s.textContent='Mendeteksi lokasi dan nama kota...';$('locBtn').disabled=true;
+  if(!navigator.geolocation){$('locBtn').disabled=false;s.className='status bad';s.textContent='Browser tidak mendukung GPS. Gunakan browser yang mendukung lokasi.';return;}
   navigator.geolocation.getCurrentPosition(pos=>{
     const {latitude,longitude,accuracy}=pos.coords;
-    const area=findArea(latitude,longitude);
-    if(!area){s.className='status bad';s.textContent='Koordinat terdeteksi, tetapi area layanan belum cocok atau batas Area 1–4 belum dikonfigurasi. Hubungi owner.';return;}
     verifiedLocation={latitude,longitude,accuracy};
-    verifiedArea=area;
-    s.className='status good';
-    s.innerHTML=`<div class="area">✓ ${area}</div>Lokasi terakhir dibagikan: ${new Date().toLocaleString('id-ID')} · akurasi perangkat ±${Math.round(accuracy)} meter`;
-    $('submitBtn').disabled=!$('consent').checked;
-    $('locBtn').disabled=false; $('locBtn').textContent='CEK / REFRESH LOKASI TERBARU';
+    fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=id`)
+      .then(r=>{if(!r.ok) throw new Error('Layanan deteksi kota sedang tidak tersedia.');return r.json();})
+      .then(place=>{
+        const city=place.city||place.locality||place.principalSubdivision||place.localityInfo?.administrative?.[0]?.name;
+        const region=place.principalSubdivision;
+        if(!city) throw new Error('Nama kota belum dapat dikenali. Coba lagi di area dengan sinyal GPS lebih baik.');
+        verifiedArea=[city,region].filter((v,i,a)=>v&&a.indexOf(v)===i).join(', ');
+        s.className='status good';
+        s.innerHTML=`<div class="area">✓ ${verifiedArea}</div>Koordinat terdeteksi · akurasi ±${Math.round(accuracy)} meter`;
+        $('submitBtn').disabled=!$('consent').checked;
+      })
+      .catch(err=>{verifiedLocation=null;verifiedArea=null;s.className='status bad';s.textContent=err.message||'Nama kota gagal dideteksi. Coba lagi.';$('submitBtn').disabled=true;})
+      .finally(()=>{$('locBtn').disabled=false;$('locBtn').textContent='CEK / REFRESH LOKASI TERBARU';});
   },err=>{
     $('locBtn').disabled=false; $('locBtn').textContent='CEK / REFRESH LOKASI TERBARU';
     s.className='status bad';
