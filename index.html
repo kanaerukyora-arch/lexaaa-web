@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#08051c">
+  <meta name="description" content="Lexaa New Generation - visual prototype">
+  <title>Lexaa — New Generation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+    <!-- WELCOME -->
+    <section class="screen welcome-screen active" data-screen="welcome">
+      <video class="world-video" src="assets/lexaa-world.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <div class="video-shade"></div>
+      <div class="stars"></div>
+      <div class="welcome-content">
+        <div class="eyebrow">W E L C O M E &nbsp; T O &nbsp; T H E &nbsp; R E A L M &nbsp; O F</div>
+        <h1>Lexaa</h1>
+        <div class="generation">New Generation</div>
+        <button class="gold-button hero-button" data-action="enter">MASUK KE LEXAA</button>
+        <div class="hint">Ketuk untuk memasuki dunia Lexaa</div>
+      </div>
+    </section>
+
+    <!-- LOGIN / REGISTER -->
+    <section class="screen auth-screen" data-screen="auth">
+      <div class="screen-bg world-still"></div>
+      <div class="auth-orbs"><span></span><span></span><span></span></div>
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-orb">✦</div>
+          <div>
+            <div class="brand-title">Lexaa</div>
+            <div class="brand-sub">New Generation</div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active">LOGIN</button>
+          <button class="tab" data-action="show-register">REGISTER</button>
+        </div>
+
+        <div class="field">
+          <span class="field-icon">◈</span>
+          <input id="loginPhone" inputmode="numeric" maxlength="15" placeholder="+62 Nomor handphone" autocomplete="off">
+        </div>
+        <div class="field">
+          <span class="field-icon">⌁</span>
+          <input id="loginPin" type="password" inputmode="numeric" maxlength="4" placeholder="PIN 4 digit" autocomplete="off">
+        </div>
+
+        <button class="gold-button wide" data-action="login">MASUK / LOGIN</button>
+        <div class="auth-links">
+          <button class="text-button" data-action="show-register">Belum punya akun? <b>DAFTAR DISINI</b></button>
+          <button class="text-button">Lupa Password?</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="screen dashboard-screen" data-screen="dashboard">
+      <video class="world-video" src="assets/lexaa-world.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <div class="video-shade strong"></div>
+
+      <header class="topbar">
+        <div class="status-item"><b>▮</b><span>4G<br><small>Jaringan</small></span></div>
+        <div class="status-item"><b>ϟ</b><span>350 ms<br><small>Latency</small></span></div>
+        <div class="status-item"><b>♧</b><span>--°C<br><small>Cuaca</small></span></div>
+        <div class="status-item location"><b>⌖</b><span>Lokasi belum diizinkan<br><small>Pilih izinkan lokasi</small></span></div>
+        <div class="status-item date"><b id="clock">06:54:39</b><small>Sen, 23 Nov 2026</small></div>
+      </header>
+
+      <aside class="sidebar">
+        <div class="profile-mini">
+          <div class="avatar">✦</div>
+          <div><strong>OWN-LEXAA</strong><small>Lv. 0</small></div>
+        </div>
+        <button class="nav active">◇ <span>Beranda</span></button>
+        <button class="nav">♧ <span>Profil</span></button>
+        <button class="nav">⚙ <span>Pengaturan</span></button>
+        <button class="nav">♧ <span>Notifikasi</span></button>
+        <button class="nav">⇩ <span>UNDUH APP</span></button>
+        <div class="welcome-note">
+          <b>✦ Selamat datang di Lexaa!</b>
+          <small>Semoga hari mu penuh dengan keberuntungan. ✦</small>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <button class="explore-button" data-action="explore">Jelajahi dunia <span>›</span></button>
+      </div>
+    </section>
+
+    <!-- EXPLORE -->
+    <section class="screen explore-screen" data-screen="explore">
+      <video class="world-video" src="assets/lexaa-world.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <div class="video-shade purple"></div>
+      <button class="back-button" data-action="dashboard">← KEMBALI</button>
+      <div class="explore-grid">
+        <button class="feature-card wallet-card" data-action="wallet">
+          <div class="feature-icon">◇</div>
+          <div class="feature-title">SALDO LEXAA</div>
+          <div class="feature-sub">Cek saldo akun kamu disini</div>
+        </button>
+        <button class="feature-card"><div class="lock">▣</div><div class="feature-title">SEGERA HADIR</div><div class="feature-sub">Fitur ini akan segera hadir</div></button>
+        <button class="feature-card"><div class="lock">▣</div><div class="feature-title">SEGERA HADIR</div><div class="feature-sub">Fitur ini akan segera hadir</div></button>
+        <button class="feature-card"><div class="lock">▣</div><div class="feature-title">SEGERA HADIR</div><div class="feature-sub">Fitur ini akan segera hadir</div></button>
+        <button class="feature-card"><div class="lock">▣</div><div class="feature-title">SEGERA HADIR</div><div class="feature-sub">Fitur ini akan segera hadir</div></button>
+        <button class="feature-card"><div class="lock">▣</div><div class="feature-title">SEGERA HADIR</div><div class="feature-sub">Fitur ini akan segera hadir</div></button>
+      </div>
+    </section>
+
+    <!-- WALLET PHONE -->
+    <section class="screen wallet-screen" data-screen="wallet">
+      <div class="wallet-bg"></div>
+      <div class="wallet-panel">
+        <div class="wallet-header">
+          <div class="wallet-crown">♛</div>
+          <div><h2>LEXAA WALLET</h2><small>Y O U R &nbsp; T R E A S U R E , &nbsp; Y O U R &nbsp; W O R L D</small></div>
+        </div>
+        <div class="wallet-field"><span>◎</span><i>REGION</i><b>🇮🇩 &nbsp;+62</b></div>
+        <div class="wallet-field phone-field"><span>☎</span><strong id="walletPhone"></strong></div>
+        <div class="wallet-instruction" id="walletInstruction">Masukkan nomor handphone lalu tekan Enter</div>
+        <div class="keypad" data-keypad="phone">
+          <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+          <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+          <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+          <button data-key="back">⌫</button><button data-key="0">0</button><button class="enter" data-key="enter">➜</button>
+        </div>
+        <div class="wallet-bottom">
+          <span>Belum Punya Wallet Lexaa?</span>
+          <button class="purple-button" data-action="register">Daftar Sekarang ›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- WALLET PIN -->
+    <section class="screen wallet-screen" data-screen="wallet-pin">
+      <div class="wallet-bg"></div>
+      <div class="wallet-panel">
+        <div class="wallet-header">
+          <div class="wallet-crown">♛</div>
+          <div><h2>LEXAA WALLET</h2><small>Y O U R &nbsp; T R E A S U R E , &nbsp; Y O U R &nbsp; W O R L D</small></div>
+        </div>
+        <div class="wallet-field"><span>◎</span><i>REGION</i><b>🇮🇩 &nbsp;+62</b></div>
+        <div class="wallet-field phone-field"><span>☎</span><strong id="pinDots">● ● ● ●</strong></div>
+        <div class="wallet-instruction">Masukkan PIN 4 digit lalu tekan Enter</div>
+        <div class="keypad" data-keypad="pin">
+          <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+          <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+          <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+          <button data-key="back">⌫</button><button data-key="0">0</button><button class="enter" data-key="enter">➜</button>
+        </div>
+        <div class="wallet-bottom single"><button class="purple-button" data-action="dashboard">Kembali ke Login ›</button></div>
+      </div>
+    </section>
+
+    <!-- REGISTER PHONE -->
+    <section class="screen wallet-screen" data-screen="register">
+      <div class="wallet-bg"></div>
+      <div class="wallet-panel register-panel">
+        <div class="wallet-header">
+          <div class="wallet-crown">♛</div>
+          <div><h2>LEXAA WALLET</h2><small>Y O U R &nbsp; T R E A S U R E , &nbsp; Y O U R &nbsp; W O R L D</small></div>
+        </div>
+        <div class="wallet-field"><span>◎</span><i>REGION</i><b>🇮🇩 &nbsp;+62</b></div>
+        <div class="wallet-field phone-field"><span>☎</span><strong id="registerPhone"></strong></div>
+        <div class="wallet-instruction">Masukkan nomor handphone lalu tekan Enter</div>
+        <div class="keypad" data-keypad="register-phone">
+          <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+          <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+          <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+          <button data-key="back">⌫</button><button data-key="0">0</button><button class="enter" data-key="enter">➜</button>
+        </div>
+        <div class="wallet-bottom single"><button class="purple-button" data-action="auth">Kembali ke Login ›</button></div>
+      </div>
+    </section>
+
+    <!-- CREATE PIN -->
+    <section class="screen wallet-screen" data-screen="create-pin">
+      <div class="wallet-bg"></div>
+      <div class="wallet-panel register-panel">
+        <div class="wallet-header">
+          <div class="wallet-crown">♛</div>
+          <div><h2>LEXAA WALLET</h2><small>Y O U R &nbsp; T R E A S U R E , &nbsp; Y O U R &nbsp; W O R L D</small></div>
+        </div>
+        <div class="wallet-field"><span>◎</span><i>REGION</i><b>🇮🇩 &nbsp;+62</b></div>
+        <div class="wallet-field phone-field"><span>☎</span><strong id="createPinDots"></strong></div>
+        <div class="wallet-instruction">Buat PIN 4 digit lalu tekan Enter</div>
+        <div class="keypad" data-keypad="create-pin">
+          <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+          <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+          <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+          <button data-key="back">⌫</button><button data-key="0">0</button><button class="enter" data-key="enter">➜</button>
+        </div>
+        <div class="wallet-bottom single"><button class="purple-button" data-action="auth">Kembali ke Login ›</button></div>
+      </div>
+    </section>
+
+    <!-- CONFIRM PIN -->
+    <section class="screen wallet-screen" data-screen="confirm-pin">
+      <div class="wallet-bg"></div>
+      <div class="wallet-panel register-panel">
+        <div class="wallet-header">
+          <div class="wallet-crown">♛</div>
+          <div><h2>LEXAA WALLET</h2><small>Y O U R &nbsp; T R E A S U R E , &nbsp; Y O U R &nbsp; W O R L D</small></div>
+        </div>
+        <div class="wallet-field"><span>◎</span><i>REGION</i><b>🇮🇩 &nbsp;+62</b></div>
+        <div class="wallet-field phone-field"><span>☎</span><strong id="confirmPinDots"></strong></div>
+        <div class="wallet-instruction">Konfirmasi PIN 4 digit lalu tekan Enter</div>
+        <div class="keypad" data-keypad="confirm-pin">
+          <button data-key="1">1</button><button data-key="2">2</button><button data-key="3">3</button>
+          <button data-key="4">4</button><button data-key="5">5</button><button data-key="6">6</button>
+          <button data-key="7">7</button><button data-key="8">8</button><button data-key="9">9</button>
+          <button data-key="back">⌫</button><button data-key="0">0</button><button class="enter" data-key="enter">➜</button>
+        </div>
+        <div class="wallet-bottom single"><button class="purple-button" data-action="auth">Kembali ke Login ›</button></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
